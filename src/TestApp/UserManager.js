@@ -26,6 +26,7 @@ const renewToken = (retry) => {
         .then(refreshed => {
             if(refreshed) {
                 console.debug("-- Refreshed --");
+                console.log(kc)
                 mqtt.setToken(kc.token);
             } else {
                 console.warn('Token is still valid?..');
@@ -52,6 +53,7 @@ export const getUser = (callback) => {
     kc.init({onLoad: 'check-sso', checkLoginIframe: false, flow: 'standard', pkceMethod: 'S256'})
         .then(authenticated => {
             if(authenticated) {
+                console.log("check-sso", kc)
                 const {realm_access: {roles},sub,given_name,name,email} = kc.tokenParsed;
                 let user = {id: sub, display: name, username: given_name, name, email, roles};
                 mqtt.setToken(kc.token);

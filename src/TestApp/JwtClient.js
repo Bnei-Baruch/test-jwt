@@ -26,9 +26,7 @@ class JwtClint extends Component {
         const {user, roles} = this.state;
 
         let opt = roles.map((role,i) => {
-            if(role === "bb_user") return (<Button key={i} size='massive' color='green' onClick={() => window.open("https://link","_self")} >Chat</Button>);
-            if(role === "trl_user") return (<Button key={i} size='massive' color='green' onClick={() => window.open("https://link","_self")} >Translate</Button>);
-            if(role === "trl_admin") return (<Button key={i} size='massive' color='green' onClick={() => window.open("https://link","_self")} >Admin</Button>);
+            if(role === "bb_user") return (<Button key={i} size='massive' color='green' onClick={() => window.open("https://link","_self")} >Message</Button>);
             return false
         });
 

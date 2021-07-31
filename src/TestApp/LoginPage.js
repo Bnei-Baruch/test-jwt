@@ -16,6 +16,7 @@ class LoginPage extends Component {
     appLogin = () => {
         getUser((user) => {
             if(user) {
+                console.log("Got user: ", user)
                 this.setState({loading: false});
                 this.props.checkPermission(user);
             } else {
@@ -54,7 +55,7 @@ class LoginPage extends Component {
                     </Message.Header>
                     <p>It's page for for test KeyCloak flow</p>
                     {this.props.user === null ? login : this.props.enter}
-                    <p><Button color='orange' onClick={() => window.open("tt.mp4", "_blank")} >How to use?</Button></p>
+                    <p><Button color='orange' >Button</Button></p>
                 </Message>
             </Container>
         );
