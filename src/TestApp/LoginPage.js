@@ -30,6 +30,8 @@ class LoginPage extends Component {
         kc.login({redirectUri: window.location.href});
     };
 
+
+
     render() {
 
         const {disabled, loading} = this.state;

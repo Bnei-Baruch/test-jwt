@@ -33,6 +33,7 @@ const renewToken = (retry) => {
             }
         })
         .catch(err => {
+            console.error("Refresh error: ", err);
             retry++;
             if(retry > 5) {
                 console.error("Refresh retry: failed");
@@ -61,7 +62,7 @@ export const getUser = (callback) => {
             } else {
                 callback(null)
             }
-        }).catch((err) => console.log(err));
+        }).catch((err) => console.error(err));
 };
 
 export default kc;

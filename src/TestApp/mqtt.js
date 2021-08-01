@@ -44,17 +44,28 @@ class MqttMsg {
                 console.log("[mqtt] Connected to server: ", data);
                 this.connected = true;
                 callback(data);
+            } else {
+                console.error("[mqtt] Connected to server: ", data);
             }
         });
 
         this.mq.on("error", (data) => console.error("[mqtt] Error: ", data));
-        this.mq.on("disconnect", (data) => console.error("[mqtt] Error: ", data));
+        this.mq.on("disconnect", (data) => console.error("[mqtt] Disconnect: ", data));
+        this.mq.on("close", (data) => console.error("[mqtt] Close: ", data));
+        this.mq.on("end", () => console.warn("[mqtt] End: "));
+        this.mq.on("reconnect", () => console.warn("[mqtt] Reconnect: "));
+        this.mq.on("offline", () => console.warn("[mqtt] Offline: "));
+        this.mq.on("outgoingEmpty", () => console.warn("[mqtt] OutgoingEmpty: "));
+
+        this.mq.on("packetsend", (data) => console.debug("[mqtt] PacketSend: ", data));
+        this.mq.on("packetreceive", (data) => console.debug("[mqtt] PacketReceive: ", data));
+
     };
 
-    join = (topic, chat) => {
+    join = (topic) => {
         if (!this.mq) return;
         console.log("[mqtt] Subscribe to: ", topic);
-        let options = chat ? {qos: 0, nl: false} : {qos: 2, nl: true};
+        let options = {qos: 1, nl: true};
         this.mq.subscribe(topic, {...options}, (err) => {
             err && console.error("[mqtt] Error: ", err);
         });
@@ -72,39 +83,25 @@ class MqttMsg {
     send = (message, retain, topic) => {
         if (!this.mq) return;
         console.log("[mqtt] Send data on topic: ", topic, message);
-        let options = {qos: 2, retain, properties: {messageExpiryInterval: 0, userProperties: this.user}};
+        let options = {qos: 1, retain, properties: {messageExpiryInterval: 0, userProperties: this.user}};
         this.mq.publish(topic, message, {...options}, (err) => {
             err && console.error("[mqtt] Error: ", err);
         });
     };
 
-    watch = (callback, stat) => {
+    watch = (callback) => {
         let message;
         this.mq.on("message", (topic, data, packet) => {
-            console.debug("[mqtt] Got data on topic: ", topic);
-            if (/trl\/room\/\d+\/chat/.test(topic)) {
-                this.mq.emit("MqttChatEvent", data);
-            } else if (/trl\/users\//.test(topic)) {
-                if (topic.split("/")[2] === "broadcast") {
-                    this.mq.emit("MqttBroadcastMessage", data);
-                } else {
-                    this.mq.emit("MqttPrivateMessage", data);
-                }
-            } else {
-                if (stat) {
-                    message = data.toString();
-                } else {
-                    try {
-                        message = JSON.parse(data.toString());
-                    } catch (e) {
-                        console.error(e);
-                        console.error("[mqtt] Not valid JSON, ", data.toString());
-                        return;
-                    }
-                }
-                console.log("[mqtt] Got data on topic: ", topic, message);
-                callback(message, topic);
+            try {
+                message = JSON.parse(data.toString());
+            } catch (e) {
+                console.error(e);
+                console.error("[mqtt] Not valid JSON, ", data.toString());
+                return;
             }
+            console.log("[mqtt] Got data on topic: ", topic, message);
+            callback(message, topic);
+
         });
     };
 
