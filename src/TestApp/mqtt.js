@@ -58,7 +58,13 @@ class MqttMsg {
         this.mq.on("outgoingEmpty", () => console.warn("[mqtt] OutgoingEmpty: "));
 
         this.mq.on("packetsend", (data) => console.debug("[mqtt] PacketSend: ", data));
-        this.mq.on("packetreceive", (data) => console.debug("[mqtt] PacketReceive: ", data));
+        this.mq.on("packetreceive", (data) => {
+            console.debug("[mqtt] PacketReceive: ", data);
+            if(data.reasonCode === 135) {
+                console.error("[mqtt] Auth Error: ", data);
+                //window.location.reload();
+            }
+        });
 
     };
 

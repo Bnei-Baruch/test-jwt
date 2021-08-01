@@ -54,6 +54,10 @@ export const getUser = (callback) => {
     kc.init({onLoad: 'check-sso', checkLoginIframe: false, flow: 'standard', pkceMethod: 'S256'})
         .then(authenticated => {
             if(authenticated) {
+                // kc.loadUserProfile().then((profile) => {
+                //     console.log("Profile: ", profile)
+                // })
+                // kc.loadUserInfo()
                 console.log("check-sso", kc)
                 const {realm_access: {roles},sub,given_name,name,email} = kc.tokenParsed;
                 let user = {id: sub, display: name, username: given_name, name, email, roles};
