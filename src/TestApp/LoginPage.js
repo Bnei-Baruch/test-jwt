@@ -27,7 +27,7 @@ class LoginPage extends Component {
 
     userLogin = () => {
         this.setState({disabled: true, loading: true});
-        kc.login({redirectUri: window.location.href});
+        kc.login({redirectUri: window.location.href, scope: 'offline_access'});
     };
 
 

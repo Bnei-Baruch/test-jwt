@@ -4,9 +4,7 @@ import mqtt from "./mqtt";
 const userManagerConfig = {
     url: 'https://test-kc.kab.info/auth',
     realm: 'main',
-    clientId: 'test-client',
-    scope: 'profile',
-    enableLogging: true,
+    clientId: 'test-client'
 };
 
 export const kc = new Keycloak(userManagerConfig);
@@ -18,7 +16,7 @@ kc.onTokenExpired = () => {
 
 kc.onAuthLogout = () => {
     console.debug("-- Detect clearToken --");
-    kc.logout();
+    //kc.logout();
 }
 
 const renewToken = (retry) => {
@@ -35,10 +33,10 @@ const renewToken = (retry) => {
         .catch(err => {
             console.error("Refresh error: ", err);
             retry++;
-            if(retry > 5) {
+            if(retry > 50) {
                 console.error("Refresh retry: failed");
                 console.debug("-- Refresh Failed --");
-                kc.clearToken();
+                //kc.clearToken();
             } else {
                 setTimeout(() => {
                     console.error("Refresh retry: " + retry);
@@ -51,7 +49,7 @@ const renewToken = (retry) => {
 
 
 export const getUser = (callback) => {
-    kc.init({onLoad: 'check-sso', checkLoginIframe: false, flow: 'standard', pkceMethod: 'S256'})
+    kc.init({onLoad: 'check-sso', checkLoginIframe: false, flow: 'standard', pkceMethod: 'S256', enableLogging: true})
         .then(authenticated => {
             if(authenticated) {
                 // kc.loadUserProfile().then((profile) => {
@@ -59,12 +57,14 @@ export const getUser = (callback) => {
                 // })
                 // kc.loadUserInfo()
                 console.log("check-sso", kc)
+                console.log("access token: ", kc.token)
+                console.log("refresh token: ", kc.refreshToken)
                 const {realm_access: {roles},sub,given_name,name,email} = kc.tokenParsed;
                 let user = {id: sub, display: name, username: given_name, name, email, roles};
                 mqtt.setToken(kc.token);
                 callback(user)
             } else {
-                callback(null)
+                callback(null);
             }
         }).catch((err) => console.error(err));
 };
