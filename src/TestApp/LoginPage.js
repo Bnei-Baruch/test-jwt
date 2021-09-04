@@ -27,9 +27,8 @@ class LoginPage extends Component {
 
     userLogin = () => {
         this.setState({disabled: true, loading: true});
-        kc.login({redirectUri: window.location.href, scope: 'offline_access'});
+        kc.login({redirectUri: window.location.href});
     };
-
 
 
     render() {
@@ -57,7 +56,7 @@ class LoginPage extends Component {
                     </Message.Header>
                     <p>It's page for for test KeyCloak flow</p>
                     {this.props.user === null ? login : this.props.enter}
-                    <p><Button color='orange' >Button</Button></p>
+                    <p />
                 </Message>
             </Container>
         );
