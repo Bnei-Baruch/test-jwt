@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import {Button} from "semantic-ui-react";
+import {Button, Input} from "semantic-ui-react";
 import LoginPage from './LoginPage';
 import {kc} from "./UserManager";
 import mqtt from "./mqtt";
 
-class JwtClient extends Component {
+class MqttClient extends Component {
 
     state = {
         pass: false,
         user: null,
         roles: [],
+        topic: "",
     };
 
     checkPermission = (user) => {
@@ -34,20 +35,24 @@ class JwtClient extends Component {
     };
 
     sendMessage = () => {
-        let msg = {type: "test", text: "content"};
-        mqtt.send(JSON.stringify(msg), false, "test/in");
+        const {user: {id}, topic} = this.state;
+        let msg = {user: {id, role: "user", display: "Test Message"}, type: "client-chat", text: "Group to day is you tomorrow!"};
+        mqtt.send(JSON.stringify(msg), false, topic);
     }
 
     render() {
 
-        const {user, roles} = this.state;
+        const {user, roles, topic} = this.state;
 
         let opt = roles.map((role,i) => {
             if(role === "bb_user") {
-                return (
-                    <Button key={i} size='massive' color='green' onClick={this.sendMessage} >
-                        Message
-                    </Button>);
+                return (<Fragment>
+                    <Input fluid type='text' placeholder='MQTT TOPIC...' action value={topic}
+                           onChange={(v,{value}) => this.setState({topic: value})}>
+                        <input />
+                        <Button positive onClick={this.sendMessage}>Send</Button>
+                    </Input>
+                </Fragment>);
             }
             return null
         });
@@ -61,4 +66,4 @@ class JwtClient extends Component {
     }
 }
 
-export default JwtClient;
+export default MqttClient;

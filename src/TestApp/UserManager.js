@@ -2,9 +2,9 @@ import Keycloak from 'keycloak-js';
 import mqtt from "./mqtt";
 
 const userManagerConfig = {
-    url: 'https://sso.kli.one/auth',
+    url: 'https://accounts.kab.info/auth',
     realm: 'main',
-    clientId: 'test-client-1'
+    clientId: 'galaxy'
 };
 
 const initOptions = {

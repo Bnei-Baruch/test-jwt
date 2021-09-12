@@ -54,7 +54,7 @@ class LoginPage extends Component {
                         {this.props.user === null ? "JWT Test" : "Hello, "+this.props.user.username}
                         {this.props.user === null ? "" : profile}
                     </Message.Header>
-                    <p>It's page for for test KeyCloak flow</p>
+                    <p>It's page for for test</p>
                     {this.props.user === null ? login : this.props.enter}
                     <p />
                 </Message>
