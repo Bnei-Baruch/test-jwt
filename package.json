@@ -8,10 +8,11 @@
     "build": "webpack --mode=production",
     "deploy": "webpack --mode=production && scripts/deploy.sh"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
     "keycloak-js": "23.0.3",
     "mqtt": "5.3.4",
     "react": "18.2.0",

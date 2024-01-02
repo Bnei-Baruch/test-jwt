@@ -64,7 +64,7 @@ module.exports = {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
-	{
+      {
         test: /\.(woff(2)?|ttf|png|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           {
@@ -131,4 +131,3 @@ module.exports = {
     },
   }
 };
-
