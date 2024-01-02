@@ -1,43 +1,32 @@
-import mqtt from "mqtt";
-import {MQTT_URL} from "./consts";
+import * as mqtt from "mqtt";
 import {randomString} from "./tools";
 
 class MqttMsg {
     constructor() {
-        this.user = null;
         this.mq = null;
         this.connected = false;
         this.room = null;
         this.token = null;
     }
 
-    init = (user, callback) => {
-        this.user = user;
-
-        const transformUrl = (url, options, client) => {
-            client.options.password = this.token;
-            return url;
-        };
+    init = (callback) => {
 
         let options = {
-            keepalive: 10,
+            keepalive: 1,
             connectTimeout: 10 * 1000,
-            clientId: user.id + "-" + randomString(3),
+            clientId: "test-" + randomString(3),
             protocolId: "MQTT",
             protocolVersion: 5,
             clean: true,
-            username: user.email,
-            password: this.token,
-            transformWsUrl: transformUrl,
+            username: "test@name",
             properties: {
-                sessionExpiryInterval: 5,
                 maximumPacketSize: 10000,
                 requestResponseInformation: true,
                 requestProblemInformation: true,
             },
         };
 
-        this.mq = mqtt.connect(`wss://${MQTT_URL}`, options);
+        this.mq = mqtt.connect(`wss://mqtt-test.kab.sh`, options);
 
         this.mq.on("connect", (data) => {
             if (data && !this.connected) {
