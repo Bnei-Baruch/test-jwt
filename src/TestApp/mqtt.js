@@ -3,22 +3,31 @@ import {randomString} from "./tools";
 
 class MqttMsg {
     constructor() {
+        this.user = null;
         this.mq = null;
         this.connected = false;
         this.room = null;
         this.token = null;
     }
 
-    init = (callback) => {
+    init = (user, callback) => {
+        this.user = user;
+
+        const transformUrl = (url, options, client) => {
+            client.options.password = this.token;
+            return url;
+        };
 
         let options = {
-            keepalive: 1,
+            keepalive: 10,
             connectTimeout: 10 * 1000,
             clientId: "test-" + randomString(3),
             protocolId: "MQTT",
             protocolVersion: 5,
             clean: true,
             username: "test@name",
+            password: this.token,
+            transformWsUrl: transformUrl,
             properties: {
                 maximumPacketSize: 10000,
                 requestResponseInformation: true,
@@ -26,7 +35,7 @@ class MqttMsg {
             },
         };
 
-        this.mq = mqtt.connect(`wss://mqtt-test.kab.sh`, options);
+        this.mq = mqtt.connect(`wss://msg.kab.sh`, options);
 
         this.mq.on("connect", (data) => {
             if (data && !this.connected) {

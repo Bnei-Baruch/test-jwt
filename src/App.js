@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import 'semantic-ui-css/semantic.min.css';
-// import JwtClient from "./TestApp/JwtClient";
+import JwtClient from "./TestApp/JwtClient";
 // import DemuxFiles from "./TestApp/DemuxFiles";
-import MqttClient from "./TestApp/MqttClient";
+// import MqttClient from "./TestApp/MqttClient";
 
 class App extends Component {
 
@@ -11,9 +11,9 @@ class App extends Component {
   render() {
     return (
         <Fragment>
-          {/*<JwtClient/>*/}
+          <JwtClient/>
           {/*<DemuxFiles />*/}
-            <MqttClient />
+          {/*  <MqttClient />*/}
         </Fragment>
     );
   }

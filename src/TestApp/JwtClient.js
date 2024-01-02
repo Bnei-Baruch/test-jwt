@@ -26,7 +26,7 @@ class JwtClient extends Component {
     initMQTT = (user) => {
         mqtt.init(user, (data) => {
             console.log("[mqtt] init: ", data, user);
-            mqtt.join("test/in");
+            mqtt.join("janus/gxy5/to-janus");
             mqtt.watch((message) => {
                 //this.handleMessage(message);
             });

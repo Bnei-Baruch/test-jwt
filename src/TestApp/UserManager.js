@@ -2,7 +2,7 @@ import Keycloak from 'keycloak-js';
 import mqtt from "./mqtt";
 
 const userManagerConfig = {
-    url: 'https://acc.kab.sh/auth',
+    url: 'https://accounts.kab.info/auth',
     realm: 'main',
     clientId: 'galaxy'
 };

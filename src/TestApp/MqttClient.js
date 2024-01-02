@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import {Container} from "semantic-ui-react";
 import {Button, Input} from "semantic-ui-react";
 import mqtt from "./mqtt";
 
@@ -18,7 +19,7 @@ class MqttClient extends Component {
     initMQTT = () => {
         mqtt.init( (data) => {
             console.log("[mqtt] init: ", data);
-            mqtt.join("test/in");
+            mqtt.join("keycloak/events");
             mqtt.watch((message) => {
                 //this.handleMessage(message);
             });
@@ -35,13 +36,13 @@ class MqttClient extends Component {
         const {topic} = this.state;
 
         return (
-            <Fragment>
+            <Container>
                 <Input fluid type='text' placeholder='MQTT TOPIC...' action value={topic}
                        onChange={(v,{value}) => this.setState({topic: value})}>
                     <input />
                     <Button positive onClick={this.sendMessage}>Send</Button>
                 </Input>
-            </Fragment>
+            </Container>
 
         );
     }
